@@ -1,125 +1,69 @@
 <template>
-  <div @click="clickHandle">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
-    </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-
-
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
-    </div>
-  </div>
+  <view>
+    <!-- 1.0 搜索框 -->
+    <navigator url="/pages/search/mani" class="btn" hover-class="none">
+      <view class="btn-in">
+        <icon class="btn-icon" type="search" size="16"></icon>
+        搜索
+      </view>
+    </navigator>
+    <!-- 2.0 轮播图 -->
+    <swiper
+      indicator-dots
+      indicator-active-color="#fff"
+      autoplay
+      circular
+      interval="2000"
+    >
+      <block v-for="(item,index) in imgUrls" :key="index">
+        <swiper-item>
+          <image mode="aspectFit" :src="item" class="slide-image"></image>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
 </template>
 
 <script>
-import card from '@/components/card'
-
 export default {
-  data () {
+  data() {
     return {
-      motto: 'Hello miniprograme',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
+  imgUrls: [
+      'https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner1.png',
+      'https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner2.png',
+      'https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner3.png'
+    ]
       }
     }
-  },
-
-  components: {
-    card
-  },
-
-  methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
-    },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
-    }
-  },
-
-  created () {
-    // let app = getApp()
   }
-}
 </script>
 
-<style scoped>
-.userinfo {
+<style>
+/* 1.0 搜索框 */
+.btn{
+  background-color: #DC143C;
+  padding: 20rpx;
+}
+.btn-in{
+  height: 60rpx;
+  background-color: #fff;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  font-size: 32rpx;
+  color:#ccc;
+  border-radius: 10rpx;
+}
+.btn-icon{
+  margin-right: 20rpx;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+/* 2.0 轮播图  */
+.slide-image{
+  width: 750rpx;
+  height: 340rpx;
 }
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
-}
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
-}
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
-}
-
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
+swiper{
+  height: 340rpx;
 }
 </style>

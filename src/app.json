@@ -4,12 +4,14 @@
     "pages/cart/main",
     "pages/categories/main",
     "pages/logs/main",
-    "pages/my/main"  ],
+    "pages/my/main",
+    "pages/search/mani"
+  ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#DC143C",
+    "navigationBarTitleText": "优购",
+    "navigationBarTextStyle": "white"
   },
   "tabBar": {
     "color": "#999",
