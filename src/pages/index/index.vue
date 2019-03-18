@@ -1,12 +1,6 @@
 <template>
   <view>
-    <!-- 1.0 搜索框 -->
-    <navigator url="/pages/search/mani" class="btn" hover-class="none">
-      <view class="btn-in">
-        <icon class="btn-icon" type="search" size="16"></icon>
-        搜索
-      </view>
-    </navigator>
+    <seacht></seacht>
     <!-- 2.0 轮播图 -->
     <swiper
       indicator-dots
@@ -17,46 +11,59 @@
     >
       <block v-for="(item,index) in imgUrls" :key="index">
         <swiper-item>
-          <image mode="aspectFit" :src="item" class="slide-image"></image>
+          <image mode="aspectFit" :src="item.image_src" class="slide-image"></image>
         </swiper-item>
       </block>
     </swiper>
+    <!-- 3.0 分类 -->
+    <view class="cate">
+      <block
+        v-for="(item,index) in cate"
+        :key="index">
+        <image class="cate-img"
+          :src="item.image_src"
+          mode="aspectFit">
+        </image>
+      </block>
+    </view>
+    <view class="divide"></view>
+    <!-- 4.0 首页楼层 -->
   </view>
 </template>
 
 <script>
+import seacht from "../../components/seacht"
 export default {
-  data() {
+  data() {      
     return {
-  imgUrls: [
-      'https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner1.png',
-      'https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner2.png',
-      'https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner3.png'
-    ]
+  imgUrls: [],
+  cate:[]
       }
+    },
+    components:{
+      seacht
+    },
+    onLoad(){
+      // 轮播图
+      wx.request({
+        url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata', //开发者服务器接口地址",
+        success: res => {
+          this.imgUrls = res.data.message;
+        }
+      }),
+      // 分类
+      wx.request({
+        url: 'https://www.zhengzhicheng.cn/api/public/v1/home/catitems', //开发者服务器接口地址",
+        success: res => {
+          this.cate = res.data.message;
+        },
+      });
     }
   }
 </script>
 
 <style>
-/* 1.0 搜索框 */
-.btn{
-  background-color: #DC143C;
-  padding: 20rpx;
-}
-.btn-in{
-  height: 60rpx;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32rpx;
-  color:#ccc;
-  border-radius: 10rpx;
-}
-.btn-icon{
-  margin-right: 20rpx;
-}
+
 
 /* 2.0 轮播图  */
 .slide-image{
@@ -65,5 +72,24 @@ export default {
 }
 swiper{
   height: 340rpx;
+}
+
+/* 3.0 分类 */
+.cate{
+  height: 190rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.cate-img{
+  flex: 1;
+  width: 128rpx;
+  height: 140rpx;
+}
+
+/* 4.0 首页楼层 */
+/* 隔离盒子 */
+.divide{
+width: 90rpx;
 }
 </style>
