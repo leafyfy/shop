@@ -26,8 +26,34 @@
         </image>
       </block>
     </view>
-    <view class="divide"></view>
     <!-- 4.0 首页楼层 -->
+    <block v-for="(item,index) in floor" :key="index">
+    <view class="divide"></view>
+      <view class="floor">
+        <view class="floor-title">
+          <image
+            :src="item.floor_title.image_src">
+          </image>
+        </view>
+        <!-- 商品盒子 -->
+        <view class="floor-body">
+          <!-- 商品左侧 -->
+          <view class="floor-body-left">
+            <image :src="item.product_list[0].image_src">
+            </image>
+          </view>
+          <!-- 商品右测 -->
+          <view class="floor-body-right">
+            <block v-for="(subItem,subIndex) in item.product_list" :key="subIndex">
+              <image 
+              v-if="subIndex !== 0"
+              :src="item.product_list[subIndex].image_src">
+              </image>
+            </block>
+          </view>
+        </view>
+      </view>
+    </block>
   </view>
 </template>
 
@@ -37,7 +63,8 @@ export default {
   data() {      
     return {
   imgUrls: [],
-  cate:[]
+  cate:[],
+  floor:[]
       }
     },
     components:{
@@ -56,7 +83,14 @@ export default {
         url: 'https://www.zhengzhicheng.cn/api/public/v1/home/catitems', //开发者服务器接口地址",
         success: res => {
           this.cate = res.data.message;
-        },
+        }
+      }),
+      // 楼层
+      wx.request({
+        url: 'https://www.zhengzhicheng.cn/api/public/v1/home/floordata', //开发者服务器接口地址",
+        success: res => {
+          this.floor = res.data.message;
+        }
       });
     }
   }
@@ -90,6 +124,26 @@ swiper{
 /* 4.0 首页楼层 */
 /* 隔离盒子 */
 .divide{
-width: 90rpx;
+  height: 20rpx;
+  background-color: #f4f4f4;
+}
+.floor-title image{
+  width: 750rpx;
+  height: 60rpx;
+  background-color: #f4f4f4;
+}
+.floor-body{
+  display: flex;
+  padding:20rpx 0 20rpx 20rpx;
+}
+.floor-body-left image{
+  width: 232rpx;
+  height: 386rpx;
+margin-right: 10rpx;
+}
+.floor-body-right image{
+  width: 232rpx;
+  height: 188rpx;
+  margin-right: 10rpx;
 }
 </style>

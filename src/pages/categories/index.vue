@@ -1,13 +1,9 @@
 <template>
   <view>
     <seacht></seacht>
-    <view>
-        <classify-left class="div-left">
-            左边
-        </classify-left>
-        <classify-right class="div-right">
-            右边
-        </classify-right>
+    <view class="cod">
+      <classify-left class="div-left">左边</classify-left>
+      <classify-right class="div-right">右边</classify-right>
     </view>
   </view>
 </template>
@@ -22,10 +18,19 @@ export default {
 </script>
 
 <style>
-.div-left{
-    width: 200rpx;
+.cod {
+  position: relative;
 }
-.div-right{
-    
+.div-left {
+  width: 200rpx;
+  position: absolute;
+  top: 0rpx;
+  bottom: 0rpx;
+  left: 0rpx;
+  right: 0rpx;
+}
+.div-right {
+  display: flex;
+  flex: 1;
 }
 </style>
