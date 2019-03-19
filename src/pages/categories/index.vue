@@ -1,39 +1,64 @@
 <template>
   <view>
+    <!-- 搜索框 -->
     <seacht></seacht>
+    <!-- 内容区域 -->
     <view class="cata">
+      <!-- 左侧栏 -->
       <scroll-view scroll-y class="cata-left">
-        <block v-for="(item,index) in [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,91]" :key="index">
-          <view class="item" :class="{ ative: index === tabIndex }" @tap="changeTabs(index)">大家电</view>
+        <block v-for="(item,index) in cata" :key="index">
+          <view class="item" :class="{ ative: index === tabIndex }" @tap="changeTabs(index)">{{item.cat_name}}</view>
         </block>
       </scroll-view>
-
-      <view class="cata-right">
-        <view>
-          电视
+      <!-- 右侧栏 -->
+      <scroll-view scroll-y class="cata-right">
+        <!-- 右侧头部标题 -->
+        <block v-for="(item,index) in rightdata" :key="index">
+        <view class="cata-right-title">
+          {{item.cat_name}}
         </view>
-        <view>
-          <view>
-            <image></image>
-            <view>分类名称</view>
+        <view class="cata-right-list">
+          <block
+            v-for="(subItem,subIndex) in item.children"
+            :key="subIndex">
+          <view class="cata-right-list-item">
+            <!-- 商品图片 -->
+            <image :src="subItem.cat_icon"></image>
+            <!-- 商品名称 -->
+            <view>{{subItem.cat_name}}</view>
           </view>
+          </block>
         </view>
-      </view>
+        </block>
+      </scroll-view>
     </view>
   </view>
 </template>
 
 <script>
-import seacht from "../../components/seacht";
+// 导入模块
+import seacht from "../../components/seacht"
+import request from "../../utils/request.js" 
 export default {
   data() {
     return {
-      tabIndex: 0
+      tabIndex: 0,
+      cata:[],
+      rightdata:[]
     };
   },
+  onLoad(){
+    // 使用封装的request发请求
+    request("https://www.zhengzhicheng.cn/api/public/v1/categories").then((res)=>{
+      this.cata = res.data.message;
+      this.rightdata = this.cata[this.tabIndex].children;
+    })
+  },
+  // 注册事件
   methods: {
     changeTabs(index) {
       this.tabIndex = index;
+      
     }
   },
   components: {
@@ -43,6 +68,7 @@ export default {
 </script>
 
 <style>
+/* 左侧栏 */
 .cata {
   display: flex;
   position: fixed;
@@ -75,7 +101,32 @@ export default {
   bottom: 20rpx;
 }
 .cata-right {
-  background-color: #abc;
+  /* background-color: #abc; */
   flex: 1;
+}
+/* 右侧栏 */
+.cata-right-title{
+  text-align: center;
+  padding:40rpx 0;
+}
+.cata-right-title::before,
+.cata-right-title::after{
+  content: "/";
+  color: #ccc;
+  margin: 0 20rpx;
+}
+.cata-right-list{
+  display: flex;
+  flex-wrap: wrap;
+}
+.cata-right-list-item{
+  width: 33.333%;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.cata-right-list-item image{
+  width: 120rpx;
+  height: 120rpx;
 }
 </style>
